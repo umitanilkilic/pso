@@ -13,8 +13,8 @@ type Swarm struct {
 	FitnessFunc FitnessFunction
 }
 
-func NewSwarm(inertia, c1, c2 float64, GlobalBest Position, particles []*Particle) *Swarm {
-	return &Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, GlobalBest: GlobalBest}
+func NewSwarm(inertia, c1, c2 float64, GlobalBest Position, particles []*Particle, fitnessFunction FitnessFunction) *Swarm {
+	return &Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, GlobalBest: GlobalBest, FitnessFunc: fitnessFunction}
 }
 
 func (s *Swarm) CalculateVelocity() {
@@ -22,8 +22,8 @@ func (s *Swarm) CalculateVelocity() {
 		// Calculate the velocity
 		// v = w*v + c1*r1*(p-x) + c2*r2*(g-x)
 		inertiaPart := particle.GetVelocity().Multiply(s.Inertia)
-		c1Part := particle.GetBestPosition().Subtract(*particle.GetPosition()).Multiply(s.ConstantOne * rand.Float64())
-		c2Part := s.GlobalBest.Subtract(*particle.GetPosition()).Multiply(s.ConstantTwo * rand.Float64())
+		c1Part := particle.GetBestPosition().Subtract(*particle.GetPosition()).Multiply(s.ConstantOne * rand.Float64() * 2)
+		c2Part := s.GlobalBest.Subtract(*particle.GetPosition()).Multiply(s.ConstantTwo * rand.Float64() * 2)
 		newVelocity := inertiaPart.Add(c1Part).Add(c2Part)
 		particle.UpdateVelocity(newVelocity)
 
@@ -57,7 +57,7 @@ func (s *Swarm) UpdateGlobalBest() {
 	}
 }
 
-func (s *Swarm) Solve(iterations int, epsilon float64) {
+func (s *Swarm) PerformIterations(iterations int, epsilon float64) {
 	s.UpdateBestPosition()
 	for i := 0; i < iterations; i++ {
 		s.CalculateVelocity()
