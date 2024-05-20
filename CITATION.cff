@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: Particle Swarm Optimization Library
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: UMIT ANIL
+    family-names: KILIC
+    email: umitanilkilic@gmail.com
+repository-code: 'https://github.com/umitanilkilic/pso'
+abstract: >-
+  This project presents a basic Particle Swarm Optimization
+  (PSO) library written in the Go programming language. PSO
+  is a popular algorithm used for solving optimization
+  problems. This library provides the core functionalities
+  of PSO in Go, allowing users to easily utilize this
+  algorithm in their own projects.
+keywords:
+  - Particle Swarm Optimization
+  - PSO
+  - Go
+  - Optimization Library
+license: MIT
+commit: 83a4b0f972e65ba1c210fe41b439529434ed5267
