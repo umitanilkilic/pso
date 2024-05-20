@@ -1,6 +1,7 @@
 package pso
 
 type Particle struct {
+	ID           int
 	Position     *Position
 	Velocity     *Position
 	BestPosition *Position
@@ -32,8 +33,9 @@ func (p *Particle) GetBestPosition() *Position {
 	return p.BestPosition
 }
 
-func NewParticle(position Position, velocity Position) *Particle {
+func NewParticle(id int, position Position, velocity Position) *Particle {
 	return &Particle{
+		ID:           id,
 		Position:     &position,
 		Velocity:     &velocity,
 		BestPosition: &position,

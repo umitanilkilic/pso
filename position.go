@@ -1,7 +1,7 @@
 package pso
 
 type Position struct {
-	Coordinates   []float64
+	coordinates   []float64
 	dimensionSize int
 }
 
@@ -9,21 +9,21 @@ func (p *Position) UpdateCoordinate(coordinates ...float64) *Position {
 	if len(coordinates) > p.dimensionSize {
 		panic("Too many coordinates provided")
 	}
-	p.Coordinates = coordinates
+	p.coordinates = coordinates
 	return p
 }
 
 func (p *Position) GetCoordinates() []float64 {
-	return p.Coordinates
+	return p.coordinates
 }
 
 func (p *Position) GetDimension() int {
 	return p.dimensionSize
 }
 
-func NewPosition(coordinates ...float64) Position {
-	dim := len(coordinates)
-	return Position{Coordinates: coordinates, dimensionSize: dim}
+func NewPosition(coords ...float64) Position {
+	dim := len(coords)
+	return Position{coordinates: coords, dimensionSize: dim}
 }
 
 func (p Position) Subtract(p2 Position) Position {
@@ -32,9 +32,9 @@ func (p Position) Subtract(p2 Position) Position {
 	}
 	result := make([]float64, p.dimensionSize)
 	for i := 0; i < p.dimensionSize; i++ {
-		result[i] = p.Coordinates[i] - p2.Coordinates[i]
+		result[i] = p.coordinates[i] - p2.coordinates[i]
 	}
-	return Position{Coordinates: result, dimensionSize: p.dimensionSize}
+	return Position{coordinates: result, dimensionSize: p.dimensionSize}
 }
 
 func (p Position) Add(p2 Position) Position {
@@ -43,15 +43,15 @@ func (p Position) Add(p2 Position) Position {
 	}
 	result := make([]float64, p.dimensionSize)
 	for i := 0; i < p.dimensionSize; i++ {
-		result[i] = p.Coordinates[i] + p2.Coordinates[i]
+		result[i] = p.coordinates[i] + p2.coordinates[i]
 	}
-	return Position{Coordinates: result, dimensionSize: p.dimensionSize}
+	return Position{coordinates: result, dimensionSize: p.dimensionSize}
 }
 
 func (p Position) Multiply(scalar float64) Position {
 	result := make([]float64, p.dimensionSize)
 	for i := 0; i < p.dimensionSize; i++ {
-		result[i] = p.Coordinates[i] * scalar
+		result[i] = p.coordinates[i] * scalar
 	}
-	return Position{Coordinates: result, dimensionSize: p.dimensionSize}
+	return Position{coordinates: result, dimensionSize: p.dimensionSize}
 }
