@@ -18,7 +18,7 @@ func TestMain(t *testing.T) {
 		particles = append(particles, NewParticle(i, NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10)), NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10))))
 	}
 	//initialize swarm
-	swarm := NewSwarm(0.5, 0.5, 0.5, NewPosition(0, 0), particles, f, 10)
+	swarm := NewSwarm(0.5, 0.5, 0.5, particles, f, 10)
 	pso := NewPSO(swarm)
 	pso.Iteration = 1000
 	//run pso
