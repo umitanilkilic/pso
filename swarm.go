@@ -71,6 +71,6 @@ func (s *Swarm) limitWithinBoundaries(position *Position) {
 	}
 }
 
-func CreateSwarm(inertia, c1, c2 float64, GlobalBest Position, particles []*Particle, fitnessFunction FitnessFunction, boundarySize float64) *Swarm {
+func NewSwarm(inertia, c1, c2 float64, GlobalBest Position, particles []*Particle, fitnessFunction FitnessFunction, boundarySize float64) *Swarm {
 	return &Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, GlobalBest: GlobalBest, FitnessFunc: fitnessFunction, BoundingRectangleSize: boundarySize}
 }
