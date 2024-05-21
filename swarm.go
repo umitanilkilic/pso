@@ -72,5 +72,9 @@ func (s *Swarm) limitWithinBoundaries(position *Position) {
 }
 
 func NewSwarm(inertia, c1, c2 float64, particles []*Particle, fitnessFunction FitnessFunction, boundarySize float64) *Swarm {
-	return &Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, FitnessFunc: fitnessFunction, BoundingRectangleSize: boundarySize}
+	swarm := Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, FitnessFunc: fitnessFunction, BoundingRectangleSize: boundarySize}
+	if particles != nil || len(particles) != 0 {
+		swarm.GlobalBest = *particles[0].GetPosition()
+	}
+	return &swarm
 }

@@ -21,6 +21,7 @@ func (pso *PSO) performNextIteration() {
 
 func (pso *PSO) Optimize(executeFunc ...runner) (bestPosition *Position) {
 	pso.Swarm.UpdateBestPosition()
+	pso.Swarm.UpdateGlobalBest()
 	for i := 0; i < pso.Iteration; i++ {
 		pso.performNextIteration()
 		if len(executeFunc) > 0 {
