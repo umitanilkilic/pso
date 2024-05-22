@@ -6,7 +6,7 @@ type PSO struct {
 }
 
 // runner is a function that executed after each iteration
-type runner func([]*Particle)
+type runner func(swarm *Swarm)
 
 func NewPSO(swarm *Swarm) *PSO {
 	return &PSO{Swarm: swarm}
@@ -25,7 +25,7 @@ func (pso *PSO) Optimize(executeFunc ...runner) (bestPosition *Position) {
 	for i := 0; i < pso.Iteration; i++ {
 		pso.performNextIteration()
 		if len(executeFunc) > 0 {
-			executeFunc[0](pso.Swarm.Particles)
+			executeFunc[0](pso.Swarm)
 		}
 	}
 	bestPosition = pso.Swarm.GetGlobalBest()

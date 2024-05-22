@@ -6,6 +6,8 @@ import (
 
 type FitnessFunction func(Position) float64
 
+type ConstraintFunction func(*Position)
+
 type Swarm struct {
 	// Inertia is the inertia of the swarm
 	Inertia float64
@@ -20,7 +22,7 @@ type Swarm struct {
 	// FitnessFunc is the function that the swarm will use to evaluate the fitness of a position
 	FitnessFunc FitnessFunction
 	// Boundaries is the boundaries of the search space
-	BoundingRectangleSize float64
+	ConstraintFunc ConstraintFunction
 }
 
 func (s *Swarm) CalculateVelocity() {
@@ -40,7 +42,9 @@ func (s *Swarm) GetGlobalBest() *Position {
 func (s *Swarm) UpdatePosition() {
 	for _, particle := range s.Particles {
 		newPosition := particle.GetPosition().Add(*particle.GetVelocity())
-		s.limitWithinBoundaries(&newPosition)
+		if s.ConstraintFunc != nil {
+			s.ConstraintFunc(&newPosition)
+		}
 		particle.UpdatePosition(newPosition)
 	}
 }
@@ -61,18 +65,8 @@ func (s *Swarm) UpdateGlobalBest() {
 	}
 }
 
-func (s *Swarm) limitWithinBoundaries(position *Position) {
-	for i := 0; i < position.dimensionSize; i++ {
-		if position.coordinates[i] < -s.BoundingRectangleSize {
-			position.coordinates[i] = -s.BoundingRectangleSize
-		} else if position.coordinates[i] > s.BoundingRectangleSize {
-			position.coordinates[i] = s.BoundingRectangleSize
-		}
-	}
-}
-
-func NewSwarm(inertia, c1, c2 float64, particles []*Particle, fitnessFunction FitnessFunction, boundarySize float64) *Swarm {
-	swarm := Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, FitnessFunc: fitnessFunction, BoundingRectangleSize: boundarySize}
+func NewSwarm(inertia, c1, c2 float64, particles []*Particle, fitnessFunction FitnessFunction, constraintFunc ConstraintFunction) *Swarm {
+	swarm := Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, FitnessFunc: fitnessFunction, ConstraintFunc: constraintFunc}
 	if particles != nil || len(particles) != 0 {
 		swarm.GlobalBest = *particles[0].GetPosition()
 	}
