@@ -13,7 +13,7 @@ package main
 
 import (
     "fmt"
-    "github.com/umitanilkilic/pso"
+    _ "github.com/umitanilkilic/pso"
 )
 
 func main() {
@@ -23,25 +23,34 @@ func main() {
 	}
 	//initialize particles
 	particles := make([]*Particle, 0)
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 100; i++ {
 		particles = append(particles, NewParticle(i, NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10)), NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10))))
 	}
 	//initialize swarm
-	swarm := CreateSwarm(0.5, 0.5, 0.5, NewPosition(0, 0), particles, f, 10)
+	swarm := NewSwarm(0.5, 0.5, 0.5, particles, f, constraintFunc)
 	pso := NewPSO(swarm)
 	pso.Iteration = 1000
 	//run pso
-	pso.Optimize(printParticleInfo)
+	pso.Optimize()
 
 	fmt.Printf("Global best: %v\n", swarm.GetGlobalBest())
 	fmt.Printf("Fitness: %v\n", f(*swarm.GetGlobalBest()))
 
 }
 
-func printParticleInfo(particles []*Particle) {
-	for _, v := range particles {
-		fmt.Printf("Particle ID: %v\n", v.ID)
-		fmt.Printf("Position: %v\n", *v.GetPosition())
+func constraintFunc(position *Position) {
+	for i := 0; i < position.dimensionSize; i++ {
+		if position.coordinates[i] < -10 {
+			position.coordinates[i] = -10
+		} else if position.coordinates[i] > 10 {
+			position.coordinates[i] = 10
+		}
+	}
+}
+
+func printParticleInfo(particles *Swarm){
+	for _, particle := range particles.Particles {
+		fmt.Printf("Particle %d: %v\n", particle.ID, particle.GetPosition())
 	}
 }
 
