@@ -18,7 +18,7 @@ func (pso *PSO) SetIterationCount(iteration int) {
 }
 
 func (pso *PSO) GetCurrentIteration() int {
-	return pso.iteration
+	return pso.currentIteration
 }
 
 func (pso *PSO) GetSwarm() *Swarm {
