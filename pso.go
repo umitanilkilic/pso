@@ -1,8 +1,9 @@
 package pso
 
 type PSO struct {
-	Swarm     *Swarm
-	Iteration int
+	Swarm            *Swarm
+	iteration        int
+	currentIteration int
 }
 
 // runner is a function that executed after each iteration
@@ -10,6 +11,18 @@ type runner func(swarm *Swarm)
 
 func NewPSO(swarm *Swarm) *PSO {
 	return &PSO{Swarm: swarm}
+}
+
+func (pso *PSO) SetIterationCount(iteration int) {
+	pso.iteration = iteration
+}
+
+func (pso *PSO) GetCurrentIteration() int {
+	return pso.iteration
+}
+
+func (pso *PSO) GetSwarm() *Swarm {
+	return pso.Swarm
 }
 
 func (pso *PSO) performNextIteration() {
@@ -22,7 +35,7 @@ func (pso *PSO) performNextIteration() {
 func (pso *PSO) Optimize(executeFunc ...runner) (bestPosition *Position) {
 	pso.Swarm.UpdateBestPosition()
 	pso.Swarm.UpdateGlobalBest()
-	for i := 0; i < pso.Iteration; i++ {
+	for pso.currentIteration = 0; pso.currentIteration < pso.iteration; pso.currentIteration++ {
 		pso.performNextIteration()
 		if len(executeFunc) > 0 {
 			executeFunc[0](pso.Swarm)

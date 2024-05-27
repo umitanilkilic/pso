@@ -20,7 +20,7 @@ func TestMain(t *testing.T) {
 	//initialize swarm
 	swarm := NewSwarm(0.5, 0.5, 0.5, particles, f, constraintFunc)
 	pso := NewPSO(swarm)
-	pso.Iteration = 1000
+	pso.SetIterationCount(1000)
 	//run pso
 	pso.Optimize(printParticleInfo)
 
