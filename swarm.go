@@ -69,10 +69,10 @@ func (s *Swarm) UpdateGlobalBest() {
 	}
 }
 
-func NewSwarm(inertia, c1, c2 float64, particles []Particle, fitnessFunction FitnessFunction, constraintFunc ConstraintFunction) *Swarm {
+func NewSwarm(inertia, c1, c2 float64, particles []Particle, fitnessFunction FitnessFunction, constraintFunc ConstraintFunction) Swarm {
 	swarm := Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, FitnessFunc: fitnessFunction, ConstraintFunc: constraintFunc}
 	if particles != nil || len(particles) != 0 {
 		swarm.GlobalBest = *particles[0].GetPosition()
 	}
-	return &swarm
+	return swarm
 }
