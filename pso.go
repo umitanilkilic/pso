@@ -32,7 +32,7 @@ func (pso *PSO) performNextIteration() {
 	pso.Swarm.UpdateGlobalBest()
 }
 
-func (pso *PSO) Optimize(executeFunc ...runner) (bestPosition *Position) {
+func (pso *PSO) Optimize(executeFunc ...runner) {
 	pso.Swarm.UpdateBestPosition()
 	pso.Swarm.UpdateGlobalBest()
 	for pso.currentIteration = 0; pso.currentIteration < pso.iteration; pso.currentIteration++ {
@@ -41,6 +41,4 @@ func (pso *PSO) Optimize(executeFunc ...runner) (bestPosition *Position) {
 			executeFunc[0](pso.Swarm)
 		}
 	}
-	bestPosition = pso.Swarm.GetGlobalBest()
-	return
 }

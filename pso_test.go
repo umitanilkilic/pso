@@ -13,7 +13,7 @@ func TestMain(t *testing.T) {
 		return -1 * (math.Cos(p.GetCoordinates()[0]) * math.Cos(p.GetCoordinates()[1]) * math.Exp(-1*(math.Pow(p.GetCoordinates()[0]-math.Pi, 2)+math.Pow(p.GetCoordinates()[1]-math.Pi, 2))))
 	}
 	//initialize particles
-	particles := make([]*Particle, 0)
+	particles := make([]Particle, 0)
 	for i := 0; i < 100; i++ {
 		particles = append(particles, NewParticle(i, NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10)), NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10))))
 	}
@@ -25,7 +25,7 @@ func TestMain(t *testing.T) {
 	pso.Optimize(printParticleInfo)
 
 	fmt.Printf("Global best: %v\n", swarm.GetGlobalBest())
-	fmt.Printf("Fitness: %v\n", f(*swarm.GetGlobalBest()))
+	fmt.Printf("Fitness: %v\n", f(swarm.GetGlobalBest()))
 
 }
 

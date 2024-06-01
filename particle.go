@@ -33,8 +33,8 @@ func (p *Particle) GetBestPosition() *Position {
 	return &p.BestPosition
 }
 
-func NewParticle(id int, position Position, velocity Position) *Particle {
-	return &Particle{
+func NewParticle(id int, position Position, velocity Position) Particle {
+	return Particle{
 		ID:           id,
 		Position:     position,
 		Velocity:     velocity,

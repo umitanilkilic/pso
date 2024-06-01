@@ -18,7 +18,7 @@ type Swarm struct {
 	// GlobalBest is the best position found by the swarm
 	GlobalBest Position
 	// Particles is a list of particles that the swarm will use to search the space
-	Particles []*Particle
+	Particles []Particle
 	// FitnessFunc is the function that the swarm will use to evaluate the fitness of a position
 	FitnessFunc FitnessFunction
 	// Boundaries is the boundaries of the search space
@@ -26,7 +26,8 @@ type Swarm struct {
 }
 
 func (s *Swarm) CalculateVelocity() {
-	for _, particle := range s.Particles {
+	for i := 0; i < len(s.Particles); i++ {
+		particle := &s.Particles[i]
 		inertiaPart := particle.GetVelocity().Multiply(s.Inertia)
 		c1Part := particle.GetBestPosition().Subtract(*particle.GetPosition()).Multiply(s.ConstantOne * rand.Float64() * 2)
 		c2Part := s.GetGlobalBest().Subtract(*particle.GetPosition()).Multiply(s.ConstantTwo * rand.Float64() * 2)
@@ -35,12 +36,13 @@ func (s *Swarm) CalculateVelocity() {
 	}
 }
 
-func (s *Swarm) GetGlobalBest() *Position {
-	return &s.GlobalBest
+func (s *Swarm) GetGlobalBest() Position {
+	return s.GlobalBest
 }
 
 func (s *Swarm) UpdatePosition() {
-	for _, particle := range s.Particles {
+	for i := 0; i < len(s.Particles); i++ {
+		particle := &s.Particles[i]
 		newPosition := particle.GetPosition().Add(*particle.GetVelocity())
 		if s.ConstraintFunc != nil {
 			s.ConstraintFunc(&newPosition)
@@ -50,7 +52,8 @@ func (s *Swarm) UpdatePosition() {
 }
 
 func (s *Swarm) UpdateBestPosition() {
-	for _, particle := range s.Particles {
+	for i := 0; i < len(s.Particles); i++ {
+		particle := &s.Particles[i]
 		if s.FitnessFunc(*particle.GetPosition()) < s.FitnessFunc(*particle.GetBestPosition()) {
 			particle.BestPosition = *particle.GetPosition()
 		}
@@ -58,14 +61,15 @@ func (s *Swarm) UpdateBestPosition() {
 }
 
 func (s *Swarm) UpdateGlobalBest() {
-	for _, particle := range s.Particles {
-		if s.FitnessFunc(*particle.GetPosition()) < s.FitnessFunc(*s.GetGlobalBest()) {
+	for i := 0; i < len(s.Particles); i++ {
+		particle := &s.Particles[i]
+		if s.FitnessFunc(*particle.GetPosition()) < s.FitnessFunc(s.GetGlobalBest()) {
 			s.GlobalBest = *particle.GetPosition()
 		}
 	}
 }
 
-func NewSwarm(inertia, c1, c2 float64, particles []*Particle, fitnessFunction FitnessFunction, constraintFunc ConstraintFunction) *Swarm {
+func NewSwarm(inertia, c1, c2 float64, particles []Particle, fitnessFunction FitnessFunction, constraintFunc ConstraintFunction) *Swarm {
 	swarm := Swarm{Inertia: inertia, ConstantOne: c1, ConstantTwo: c2, Particles: particles, FitnessFunc: fitnessFunction, ConstraintFunc: constraintFunc}
 	if particles != nil || len(particles) != 0 {
 		swarm.GlobalBest = *particles[0].GetPosition()
