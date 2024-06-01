@@ -52,7 +52,7 @@ func (s *Swarm) UpdatePosition() {
 func (s *Swarm) UpdateBestPosition() {
 	for _, particle := range s.Particles {
 		if s.FitnessFunc(*particle.GetPosition()) < s.FitnessFunc(*particle.GetBestPosition()) {
-			particle.BestPosition = particle.GetPosition()
+			particle.BestPosition = *particle.GetPosition()
 		}
 	}
 }
