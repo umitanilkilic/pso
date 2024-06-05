@@ -22,7 +22,7 @@ func TestMain(t *testing.T) {
 	pso := NewPSO(swarm)
 	pso.SetIterationCount(1000)
 	//run pso
-	pso.Optimize(printParticleInfo)
+	pso.Optimize()
 
 	fmt.Printf("Global best: %v\n", pso.Swarm.GetGlobalBest())
 	fmt.Printf("Fitness: %v\n", f(pso.Swarm.GetGlobalBest()))
@@ -36,11 +36,5 @@ func constraintFunc(position *Position) {
 		} else if position.coordinates[i] > 10 {
 			position.coordinates[i] = 10
 		}
-	}
-}
-
-func printParticleInfo(particles *Swarm) {
-	for _, particle := range particles.Particles {
-		fmt.Printf("Particle %d: %v\n", particle.ID, particle.GetPosition())
 	}
 }
