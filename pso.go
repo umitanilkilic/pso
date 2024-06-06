@@ -1,7 +1,7 @@
 package pso
 
 type PSO struct {
-	Swarm            *Swarm
+	swarm            *Swarm
 	iteration        int
 	currentIteration int
 }
@@ -9,8 +9,8 @@ type PSO struct {
 // runner is a function that executed after each iteration
 type runner func(swarm *Swarm)
 
-func NewPSO(swarm *Swarm) *PSO {
-	return &PSO{Swarm: swarm}
+func NewPSO(sw *Swarm) PSO {
+	return PSO{swarm: sw}
 }
 
 func (pso *PSO) SetIterationCount(iteration int) {
@@ -22,25 +22,27 @@ func (pso *PSO) GetCurrentIteration() int {
 }
 
 func (pso *PSO) GetSwarm() *Swarm {
-	return pso.Swarm
+	return pso.swarm
 }
 
 func (pso *PSO) performNextIteration() {
-	pso.Swarm.CalculateVelocity()
-	pso.Swarm.UpdatePosition()
-	pso.Swarm.UpdateBestPosition()
-	pso.Swarm.UpdateGlobalBest()
+	for i := 0; i < len(pso.swarm.Particles); i++ {
+		particle := &pso.swarm.Particles[i]
+		pso.swarm.CalculateVelocity(particle)
+		pso.swarm.UpdatePosition(particle)
+		pso.swarm.UpdateBestPositions(particle)
+	}
 }
 
-func (pso *PSO) Optimize(executeFunc ...runner) (bestPosition *Position) {
-	pso.Swarm.UpdateBestPosition()
-	pso.Swarm.UpdateGlobalBest()
+func (pso *PSO) Optimize(executeFunc ...runner) {
+	for i := 0; i < len(pso.swarm.Particles); i++ {
+		particle := &pso.swarm.Particles[i]
+		pso.swarm.UpdateBestPositions(particle)
+	}
 	for pso.currentIteration = 0; pso.currentIteration < pso.iteration; pso.currentIteration++ {
 		pso.performNextIteration()
 		if len(executeFunc) > 0 {
-			executeFunc[0](pso.Swarm)
+			executeFunc[0](pso.swarm)
 		}
 	}
-	bestPosition = pso.Swarm.GetGlobalBest()
-	return
 }

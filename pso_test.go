@@ -13,19 +13,19 @@ func TestMain(t *testing.T) {
 		return -1 * (math.Cos(p.GetCoordinates()[0]) * math.Cos(p.GetCoordinates()[1]) * math.Exp(-1*(math.Pow(p.GetCoordinates()[0]-math.Pi, 2)+math.Pow(p.GetCoordinates()[1]-math.Pi, 2))))
 	}
 	//initialize particles
-	particles := make([]*Particle, 0)
+	particles := make([]Particle, 0)
 	for i := 0; i < 100; i++ {
 		particles = append(particles, NewParticle(i, NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10)), NewPosition(float64(rand.Float64()*10), float64(rand.Float64()*10))))
 	}
 	//initialize swarm
 	swarm := NewSwarm(0.5, 0.5, 0.5, particles, f, constraintFunc)
-	pso := NewPSO(swarm)
+	pso := NewPSO(&swarm)
 	pso.SetIterationCount(1000)
 	//run pso
-	pso.Optimize(printParticleInfo)
+	pso.Optimize(asd)
 
-	fmt.Printf("Global best: %v\n", swarm.GetGlobalBest())
-	fmt.Printf("Fitness: %v\n", f(*swarm.GetGlobalBest()))
+	fmt.Printf("Global best: %v\n", pso.swarm.GetGlobalBest())
+	fmt.Printf("Fitness: %v\n", f(pso.swarm.GetGlobalBest()))
 
 }
 
@@ -39,8 +39,6 @@ func constraintFunc(position *Position) {
 	}
 }
 
-func printParticleInfo(particles *Swarm) {
-	for _, particle := range particles.Particles {
-		fmt.Printf("Particle %d: %v\n", particle.ID, particle.GetPosition())
-	}
+func asd(swarm *Swarm) {
+	swarm.Inertia = swarm.Inertia * 0.99
 }
