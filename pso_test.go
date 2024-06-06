@@ -19,10 +19,10 @@ func TestMain(t *testing.T) {
 	}
 	//initialize swarm
 	swarm := NewSwarm(0.5, 0.5, 0.5, particles, f, constraintFunc)
-	pso := NewPSO(swarm)
+	pso := NewPSO(&swarm)
 	pso.SetIterationCount(1000)
 	//run pso
-	pso.Optimize()
+	pso.Optimize(asd)
 
 	fmt.Printf("Global best: %v\n", pso.swarm.GetGlobalBest())
 	fmt.Printf("Fitness: %v\n", f(pso.swarm.GetGlobalBest()))
@@ -37,4 +37,8 @@ func constraintFunc(position *Position) {
 			position.coordinates[i] = 10
 		}
 	}
+}
+
+func asd(swarm *Swarm) {
+	swarm.Inertia = swarm.Inertia * 0.99
 }

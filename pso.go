@@ -9,8 +9,8 @@ type PSO struct {
 // runner is a function that executed after each iteration
 type runner func(swarm *Swarm)
 
-func NewPSO(sw Swarm) PSO {
-	return PSO{swarm: &sw}
+func NewPSO(sw *Swarm) PSO {
+	return PSO{swarm: sw}
 }
 
 func (pso *PSO) SetIterationCount(iteration int) {
