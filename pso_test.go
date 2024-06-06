@@ -24,8 +24,8 @@ func TestMain(t *testing.T) {
 	//run pso
 	pso.Optimize()
 
-	fmt.Printf("Global best: %v\n", pso.Swarm.GetGlobalBest())
-	fmt.Printf("Fitness: %v\n", f(pso.Swarm.GetGlobalBest()))
+	fmt.Printf("Global best: %v\n", pso.swarm.GetGlobalBest())
+	fmt.Printf("Fitness: %v\n", f(pso.swarm.GetGlobalBest()))
 
 }
 

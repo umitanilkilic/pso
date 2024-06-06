@@ -29,6 +29,7 @@ func (pso *PSO) performNextIteration() {
 	for i := 0; i < len(pso.swarm.Particles); i++ {
 		particle := &pso.swarm.Particles[i]
 		pso.swarm.CalculateVelocity(particle)
+		pso.swarm.UpdatePosition(particle)
 		pso.swarm.UpdateBestPositions(particle)
 	}
 }
